@@ -1,0 +1,164 @@
+<?php
+ini_set('error_reporting', E_ALL);
+ini_set('display_errors', 'On');
+
+
+require_once 'vendor/autoload.php';
+
+use Twilio\Rest\Client;
+
+$sid    = "ACb6d56be0d2e98f8f815a8a381bd81b39";
+$token  = "046db17ed1304cd2607290edecfe3c48";
+$twilio = new Client($sid, $token);
+$sender = "whatsapp:+14155238886";
+
+
+
+/**
+ * Send a WhatsApp message to the specified number
+ * 
+ * @param string $number The phone number to send the message to
+ * @param string $body The body of the message
+ * 
+ * @return mixed
+ */
+function send_message($number, $body) {
+    global $twilio;
+    global $sender;
+
+    $message = $twilio->messages
+                  ->create($number,
+                           array(
+                               "body" => $body,
+                               "from" => $sender
+                           )
+                  );
+
+    return $message;
+}
+
+/**
+ * Send a media WhatsApp message to the specified number
+ * 
+ * @param string $number The phone number to send the message to
+ * @param string $mediaUrl The URL for the media object to be sent
+ * @param string $body The body of the message
+ * 
+ * @return mixed
+ */
+function send_media_message($number, $mediaUrl, $body = "") {
+    global $twilio;
+    global $sender;
+
+    $message = $twilio->messages
+                  ->create($number,
+                           array(
+                               "body" => $body,
+                               "from" => $sender,
+                               "mediaUrl" => $mediaUrl
+                           )
+                  );
+
+    return $message;
+}
+
+/**
+ * Fetches an article matching the query from Wikipedia
+ * 
+ * @param string $query The query to search for
+ * 
+ * @return string|null|bool Article text if successful, null if there when no matches are found, false if validation fails
+ */
+function wikipedia_fetch($query) {
+    // Sanity checks
+    if(strlen($query) <= 0) {
+        return false;
+    }
+
+    // Base url for querying wikipedia public api
+    $base = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=%s';
+
+    // The short form for accessing a page using its page id
+    $shortBase = 'https://en.wikipedia.org/?curid=%d';
+
+    // HTTP Request
+    $url = sprintf($base, urlencode($query) );
+
+    // Get the JSON data
+    $json = file_get_contents($url);
+
+    // Decode data
+    $data = json_decode($json);
+
+    // Cast data to array
+    $pages = (array)$data->query->pages;
+
+    if(count($pages) <= 0) {
+        return null;
+    }
+    
+    // Reverse array
+    $reversed = array_reverse($pages);
+
+    // Get the last element from reversed array
+    $article = array_pop($reversed);
+
+    // More checks
+    if(property_exists($article, "missing")) {
+        return null;
+    }
+
+    // Get article Text and cap to 140 characters
+    $link = sprintf($shortBase, $article->pageid);
+
+    // Compose the actual text to be sent to user
+    $text = trim( substr( $article->extract, 0, 140 ) ) . "...\n\nRead more at: {$link}";
+
+    return $text;
+}   
+
+// TELL ME WHEN YOU'RE BACK!
+
+function image_search($query) {
+    // Sanity checks
+    if(strlen($query) <= 0) {
+        return false;
+    }
+
+    // Base URL for using Qwant Image Search API
+    $base = 'https://api.qwant.com/api/search/images?count=3&t=images&safesearch=0&locale=en_US&uiv=4&q=%s';
+
+    // Send http request
+    $url = sprintf($base, urlencode($query) );
+
+    // Get JSON response
+    $options  = array('http' => array('user_agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36'));
+   
+    $context  = stream_context_create($options);
+
+    // Get the JSON
+    $json = file_get_contents($url, false, $context);
+
+    // Log out the request
+    log_requests($url, $json);
+    
+    // Decode the data
+    $data = json_decode($json);
+
+    if($data->status !== 'success') {
+        return null;
+    }
+
+    $results = $data->data->result->items;
+
+    return $results;
+}
+
+
+/**
+ * Log out HTTP requests made by the application
+ */
+function log_requests($url, $response)
+{
+    file_put_contents('./http_requests_out.log', "URL: {$url}\nBegin Body\n{$response}\n\n", FILE_APPEND);
+}
