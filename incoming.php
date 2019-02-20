@@ -17,20 +17,24 @@ switch ($command) {
 
         // Sanity checks failed
         if($output === false) {
-            return send_message( $_POST['From'], "Slow down cowboy. You need to provide something to search for 😝😝" );
+            send_message( "Slow down cowboy. You need to provide something to search for 😝😝" );
+
+            break;
         }
         
         // Not results found
         if($output === null) {
-            return send_message( $_POST['From'], "Wow! Well, this is embarassing 🙈 I can't seem to find anything that matches that 🙁" );
+            send_message( "Wow! Well, this is embarassing 🙈 I can't seem to find anything that matches that 🙁" );
+
+            break;
         }
 
         // Send the results
-        return send_message( $_POST['From'], "Here's your search results for '{$query}'\n\n\n{$output}" );
+        send_message( "Here's your search results for '{$query}'\n\n\n{$output}" );
         break;
 
     case 'help':
-        return send_message( $_POST['From'], "Available commands:\n\n*wiki* query - Searches for the query on Wikipedia and returns the top result\n*pict* query - Finds images that match the query and returns the top 3 results" );
+        send_message( "Available commands:\n\n*wiki* query - Searches for the query on Wikipedia and returns the top result\n*pict* query - Finds images that match the query and returns the top 3 results" );
         break;
 
     case 'pict':
@@ -39,23 +43,25 @@ switch ($command) {
 
         // Sanity checks failed
         if($images === false) {
-            return send_message( $_POST['From'], "Slow down cowboy. You need to provide something to search for 😝😝" );
+            send_message( "Slow down cowboy. You need to provide something to search for 😝😝" );
+
+            break;
         }
         
         // Not results found
         if($images === null) {
-            return send_message( $_POST['From'], "Wow! Well, this is embarassing 🙈 I can't seem to find anything that matches that 🙁" );
+            send_message( "Wow! Well, this is embarassing 🙈 I can't seem to find anything that matches that 🙁" );
+
+            break;
         }
 
         foreach($images as $index => $image) {
             send_media_message($_POST['From'], $image->media);
         }
-        
-        break;
 
         break;
     
     default:
-        send_message( $_POST['From'], "Aww schucks! That command does not exist! 😅" );
+        send_message( "Aww schucks! That command does not exist! 😅" );
         break;
 }

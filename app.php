@@ -6,6 +6,7 @@ ini_set('display_errors', 'On');
 require_once 'vendor/autoload.php';
 
 use Twilio\Rest\Client;
+use Twilio\TwiML\MessagingResponse;
 
 $sid    = "ACb6d56be0d2e98f8f815a8a381bd81b39";
 $token  = "046db17ed1304cd2607290edecfe3c48";
@@ -17,49 +18,43 @@ $sender = "whatsapp:+14155238886";
 /**
  * Send a WhatsApp message to the specified number
  * 
- * @param string $number The phone number to send the message to
  * @param string $body The body of the message
  * 
- * @return mixed
+ * @return void
  */
-function send_message($number, $body) {
-    global $twilio;
-    global $sender;
+function send_message($body) {
+    $response = new MessagingResponse();
 
-    $message = $twilio->messages
-                  ->create($number,
-                           array(
-                               "body" => $body,
-                               "from" => $sender
-                           )
-                  );
+    // Print out the TwiML for the response
+    $message = $response->message('');
 
-    return $message;
+    // Set the body to the
+    $message->body($body);
+
+    echo $response;
 }
 
 /**
  * Send a media WhatsApp message to the specified number
  * 
- * @param string $number The phone number to send the message to
  * @param string $mediaUrl The URL for the media object to be sent
  * @param string $body The body of the message
  * 
- * @return mixed
+ * @return void
  */
-function send_media_message($number, $mediaUrl, $body = "") {
-    global $twilio;
-    global $sender;
+function send_media_message($mediaUrl, $body = "") {
+    $response = new MessagingResponse();
 
-    $message = $twilio->messages
-                  ->create($number,
-                           array(
-                               "body" => $body,
-                               "from" => $sender,
-                               "mediaUrl" => $mediaUrl
-                           )
-                  );
+    // Print out the TwiML for the response
+    $message = $response->message('');
 
-    return $message;
+    // Set the body to the
+    $message->body($body);
+
+    // 
+    $message->media($mediaUrl);
+
+    echo $response;
 }
 
 /**
@@ -160,5 +155,12 @@ function image_search($query) {
  */
 function log_requests($url, $response)
 {
-    file_put_contents('./http_requests_out.log', "URL: {$url}\nBegin Body\n{$response}\n\n", FILE_APPEND);
+    file_put_contents('./logs/http_requests_out.log', "URL: {$url}\nBegin Body\n{$response}\n\n", FILE_APPEND);
+}
+
+function log_statuses($data)
+{
+    $data = json_encode($data);
+
+    file_put_contents('./logs/status_updates_out.log', "Status Update:\n{$data}\n\n", FILE_APPEND);
 }

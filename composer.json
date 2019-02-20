@@ -1,5 +1,6 @@
 {
     "require": {
-        "twilio/sdk": "^5.28"
+        "twilio/sdk": "^5.28",
+        "ext-json": "*"
     }
 }
