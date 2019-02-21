@@ -49,15 +49,11 @@ function send_media_message($mediaUrl, $body = "")
     // Print out the TwiML for the response
     $message = $response->message('');
 
-    // Set the body to the
-    $message->body($body);
-
     if (!is_array($mediaUrl)) {
-        //
         $message->media($mediaUrl);
     } else {
         foreach ($mediaUrl as $item) {
-            $message->body($item->media);
+            $message->media($item->media);
         }
     }
 

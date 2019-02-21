@@ -55,7 +55,7 @@ switch ($command) {
             break;
         }
 
-        send_media_message($message);
+        send_media_message($images);
 
         break;
 
