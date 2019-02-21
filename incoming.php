@@ -55,10 +55,13 @@ switch ($command) {
             break;
         }
 
-        foreach($images as $index => $image) {
-            send_media_message($_POST['From'], $image->media);
-        }
+        send_media_message($message);
 
+        break;
+
+
+    case 'math':
+        $output = math_eval($query);
         break;
     
     default:

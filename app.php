@@ -8,21 +8,21 @@ require_once 'vendor/autoload.php';
 use Twilio\Rest\Client;
 use Twilio\TwiML\MessagingResponse;
 
-$sid    = "ACb6d56be0d2e98f8f815a8a381bd81b39";
-$token  = "046db17ed1304cd2607290edecfe3c48";
+$sid = "ACb6d56be0d2e98f8f815a8a381bd81b39";
+$token = "046db17ed1304cd2607290edecfe3c48";
 $twilio = new Client($sid, $token);
 $sender = "whatsapp:+14155238886";
 
 
-
 /**
  * Send a WhatsApp message to the specified number
- * 
+ *
  * @param string $body The body of the message
- * 
+ *
  * @return void
  */
-function send_message($body) {
+function send_message($body)
+{
     $response = new MessagingResponse();
 
     // Print out the TwiML for the response
@@ -36,13 +36,14 @@ function send_message($body) {
 
 /**
  * Send a media WhatsApp message to the specified number
- * 
- * @param string $mediaUrl The URL for the media object to be sent
+ *
+ * @param string|array $mediaUrl The URL for the media object to be sent
  * @param string $body The body of the message
- * 
+ *
  * @return void
  */
-function send_media_message($mediaUrl, $body = "") {
+function send_media_message($mediaUrl, $body = "")
+{
     $response = new MessagingResponse();
 
     // Print out the TwiML for the response
@@ -51,22 +52,29 @@ function send_media_message($mediaUrl, $body = "") {
     // Set the body to the
     $message->body($body);
 
-    // 
-    $message->media($mediaUrl);
+    if (!is_array($mediaUrl)) {
+        //
+        $message->media($mediaUrl);
+    } else {
+        foreach ($mediaUrl as $item) {
+            $message->body($item->media);
+        }
+    }
 
     echo $response;
 }
 
 /**
  * Fetches an article matching the query from Wikipedia
- * 
+ *
  * @param string $query The query to search for
- * 
+ *
  * @return string|null|bool Article text if successful, null if there when no matches are found, false if validation fails
  */
-function wikipedia_fetch($query) {
+function wikipedia_fetch($query)
+{
     // Sanity checks
-    if(strlen($query) <= 0) {
+    if (strlen($query) <= 0) {
         return false;
     }
 
@@ -77,7 +85,7 @@ function wikipedia_fetch($query) {
     $shortBase = 'https://en.wikipedia.org/?curid=%d';
 
     // HTTP Request
-    $url = sprintf($base, urlencode($query) );
+    $url = sprintf($base, urlencode($query));
 
     // Get the JSON data
     $json = file_get_contents($url);
@@ -88,10 +96,10 @@ function wikipedia_fetch($query) {
     // Cast data to array
     $pages = (array)$data->query->pages;
 
-    if(count($pages) <= 0) {
+    if (count($pages) <= 0) {
         return null;
     }
-    
+
     // Reverse array
     $reversed = array_reverse($pages);
 
@@ -99,7 +107,7 @@ function wikipedia_fetch($query) {
     $article = array_pop($reversed);
 
     // More checks
-    if(property_exists($article, "missing")) {
+    if (property_exists($article, "missing")) {
         return null;
     }
 
@@ -107,16 +115,17 @@ function wikipedia_fetch($query) {
     $link = sprintf($shortBase, $article->pageid);
 
     // Compose the actual text to be sent to user
-    $text = trim( substr( $article->extract, 0, 140 ) ) . "...\n\nRead more at: {$link}";
+    $text = trim(substr($article->extract, 0, 140)) . "...\n\nRead more at: {$link}";
 
     return $text;
-}   
+}
 
 // TELL ME WHEN YOU'RE BACK!
 
-function image_search($query) {
+function image_search($query)
+{
     // Sanity checks
-    if(strlen($query) <= 0) {
+    if (strlen($query) <= 0) {
         return false;
     }
 
@@ -124,23 +133,23 @@ function image_search($query) {
     $base = 'https://api.qwant.com/api/search/images?count=3&t=images&safesearch=0&locale=en_US&uiv=4&q=%s';
 
     // Send http request
-    $url = sprintf($base, urlencode($query) );
+    $url = sprintf($base, urlencode($query));
 
     // Get JSON response
-    $options  = array('http' => array('user_agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36'));
-   
-    $context  = stream_context_create($options);
+    $options = array('http' => array('user_agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36'));
+
+    $context = stream_context_create($options);
 
     // Get the JSON
     $json = file_get_contents($url, false, $context);
 
     // Log out the request
     log_requests($url, $json);
-    
+
     // Decode the data
     $data = json_decode($json);
 
-    if($data->status !== 'success') {
+    if ($data->status !== 'success') {
         return null;
     }
 
@@ -149,6 +158,12 @@ function image_search($query) {
     return $results;
 }
 
+function math_eval($query)
+{
+    // Get the individual expressions from the query
+    $parts = explode("\n", $query);
+
+}
 
 /**
  * Log out HTTP requests made by the application
