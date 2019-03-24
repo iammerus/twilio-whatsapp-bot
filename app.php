@@ -109,17 +109,23 @@ function wikipedia_fetch($query)
         return null;
     }
 
-    // Get article Text and cap to 140 characters
+    // Get article Text and cap to 500 characters
     $link = sprintf($shortBase, $article->pageid);
 
     // Compose the actual text to be sent to user
-    $text = trim(substr($article->extract, 0, 140)) . "...\n\nRead more at: {$link}";
+    $text = trim(substr($article->extract, 0, 500)) . "...\n\nRead more at: {$link}";
 
     return $text;
 }
 
-// TELL ME WHEN YOU'RE BACK!
-
+/**
+ * Search for the specified image and send the top three matching
+ * images to the user
+ * 
+ * @param string $query The image to search for
+ * 
+ * @return void
+ */
 function image_search($query)
 {
     // Sanity checks
@@ -136,6 +142,7 @@ function image_search($query)
     // Get JSON response
     $options = array('http' => array('user_agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36'));
 
+    // Create stream context
     $context = stream_context_create($options);
 
     // Get the JSON
@@ -147,10 +154,12 @@ function image_search($query)
     // Decode the data
     $data = json_decode($json);
 
+    // 
     if ($data->status !== 'success') {
         return null;
     }
 
+    // Retrieve the results
     $results = $data->data->result->items;
 
     return $results;

@@ -1,0 +1,9 @@
+Status Update:
+{"SmsSid":"SMa659ee703f3268949a8c465fb1444d3f","SmsStatus":"sent","MessageStatus":"sent","ChannelToAddress":"+263783944585","To":"whatsapp:+263783944585","ChannelPrefix":"whatsapp","MessageSid":"SMa659ee703f3268949a8c465fb1444d3f","AccountSid":"ACb6d56be0d2e98f8f815a8a381bd81b39","StructuredMessage":"false","From":"whatsapp:+14155238886","ApiVersion":"2010-04-01","ChannelInstallSid":"XEcc20d939f803ee381f2442185d0d5dc5"}
+
+Status Update:
+{"EventType":"READ","SmsSid":"SMa659ee703f3268949a8c465fb1444d3f","SmsStatus":"delivered","MessageStatus":"delivered","ChannelToAddress":"+263783944585","To":"whatsapp:+263783944585","ChannelPrefix":"whatsapp","MessageSid":"SMa659ee703f3268949a8c465fb1444d3f","AccountSid":"ACb6d56be0d2e98f8f815a8a381bd81b39","From":"whatsapp:+14155238886","ApiVersion":"2010-04-01","ChannelInstallSid":"XE9f1db7dc82c0ec367cc78549b2f6852a"}
+
+Status Update:
+{"EventType":"DELIVERED","SmsSid":"SMa659ee703f3268949a8c465fb1444d3f","SmsStatus":"delivered","MessageStatus":"delivered","ChannelToAddress":"+263783944585","To":"whatsapp:+263783944585","ChannelPrefix":"whatsapp","MessageSid":"SMa659ee703f3268949a8c465fb1444d3f","AccountSid":"ACb6d56be0d2e98f8f815a8a381bd81b39","From":"whatsapp:+14155238886","ApiVersion":"2010-04-01","ChannelInstallSid":"XE9f1db7dc82c0ec367cc78549b2f6852a"}
+
