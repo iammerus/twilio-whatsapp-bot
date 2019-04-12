@@ -57,8 +57,6 @@ function send_media_message($mediaUrl, $body = "")
         }
     }
 
-    var_dump($item);
-
     echo $response;
 }
 
