@@ -8,10 +8,10 @@ require_once 'vendor/autoload.php';
 use Twilio\Rest\Client;
 use Twilio\TwiML\MessagingResponse;
 
-$sid = "ACb6d56be0d2e98f8f815a8a381bd81b39";
-$token = "046db17ed1304cd2607290edecfe3c48";
+$sid = "ACCOUNT_SID";
+$token = "ACCOUNT_TOKEN";
 $twilio = new Client($sid, $token);
-$sender = "whatsapp:+14155238886";
+$sender = "whatsapp:ACCOUNT_NUMBER";
 
 
 /**
