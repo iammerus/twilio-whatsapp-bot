@@ -1,4 +1,9 @@
 {
+    "autoload": {
+        "psr-4": {
+            "Merus\\Bot\\": "./src/"
+        }
+    },
     "require": {
         "twilio/sdk": "^5.28",
         "ext-json": "*"
