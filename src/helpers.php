@@ -1,5 +1,7 @@
 <?php
 
+use Merus\Bot\Http\Router;
+
 if(!function_exists('array_find')) {
     function array_find($xs, $f) {
         foreach ($xs as $x) {
@@ -8,5 +10,15 @@ if(!function_exists('array_find')) {
             }
         }
         return null;
+    }
+}
+
+
+if(!function_exists('route')) {
+    function route() {
+        return (object)[
+            'get' => function(string $path, $action) { Router::define('get', $path, $action); },
+            'post' => function(string $path, $action) { Router::define('post', $path, $action); }
+        ];
     }
 }
