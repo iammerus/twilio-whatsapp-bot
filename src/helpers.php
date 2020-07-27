@@ -3,10 +3,15 @@
 use Merus\Bot\Http\Router;
 
 if(!function_exists('array_find')) {
-    function array_find($xs, $f) {
-        foreach ($xs as $x) {
-            if (call_user_func($f, $x) === true) {
-                return $x;
+    /**
+     * Find an array element using the given callback
+     * 
+     * @return mixed|null
+     */
+    function array_find(array $array, callable $callback) {
+        foreach ($array as $item) {
+            if (call_user_func($callback, $item) === true) {
+                return $item;
             }
         }
         return null;
@@ -15,6 +20,11 @@ if(!function_exists('array_find')) {
 
 
 if(!function_exists('route')) {
+    /**
+     * Helper method for defining routes
+     * 
+     * @return object
+     */
     function route() {
         return (object)[
             'get' => function(string $path, $action) { Router::define('get', $path, $action); },
