@@ -4,7 +4,7 @@
             "src/helpers.php"
         ],
         "psr-4": {
-            "Merus\\Bot\\": "./src/"
+            "Merus\\WAB\\": "./src/"
         }
     },
     "require": {

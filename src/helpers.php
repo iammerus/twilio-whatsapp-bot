@@ -1,6 +1,6 @@
 <?php
 
-use Merus\Bot\Http\Router;
+use Merus\WAB\Http\Router;
 
 if(!function_exists('array_find')) {
     /**
