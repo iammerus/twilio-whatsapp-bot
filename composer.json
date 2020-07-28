@@ -1,14 +1,15 @@
 {
-    "autoload": {
-        "files": [
-            "src/helpers.php"
-        ],
-        "psr-4": {
-            "Merus\\WAB\\": "./src/"
-        }
-    },
-    "require": {
-        "twilio/sdk": "^5.28",
-        "ext-json": "*"
+  "autoload": {
+    "files": [
+      "src/helpers.php"
+    ],
+    "psr-4": {
+      "Merus\\WAB\\": "./src/"
     }
+  },
+  "require": {
+    "twilio/sdk": "^5.28",
+    "ext-json": "*",
+    "ext-pdo": "*"
+  }
 }
