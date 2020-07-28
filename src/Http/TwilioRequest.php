@@ -1,16 +1,6 @@
 <?php
 
-
 namespace Merus\WAB\Http;
-
-//MessageSid
-//SmsSid
-//AccountSid
-//MessagingServiceSid
-//From
-//To
-//Body
-//NumMedia
 
 class TwilioRequest
 {
@@ -69,7 +59,6 @@ class TwilioRequest
     public function __construct(
         string $messageSid, string $accountSid, string $messagingServiceSid, string $from, string $to, string $body)
     {
-
         $this->messageSid = $messageSid;
         $this->accountSid = $accountSid;
         $this->messagingServiceSid = $messagingServiceSid;
