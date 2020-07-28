@@ -32,3 +32,15 @@ if(!function_exists('route')) {
         ];
     }
 }
+
+
+if(!function_exists('config')) {
+    function config($key) {
+        // Require in config array
+        $config = require_once __DIR__ . '/config.php';
+
+        if(!$key) return $config;
+
+
+    }
+}

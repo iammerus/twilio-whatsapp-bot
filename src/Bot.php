@@ -14,6 +14,13 @@ class Bot
      */
     protected $db;
 
+    /**
+     * Bot constructor.
+     *
+     * @param array $config Key value pairs of configuration values
+     *
+     * @throws Exception
+     */
     public function __construct(array $config) {
         $this->bootstrap($config);
     }
