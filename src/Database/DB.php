@@ -54,6 +54,16 @@ class DB
     }
 
     /**
+     * get PDO instance
+     *
+     * @return PDO PDO instance
+     */
+    public function closeConnection()
+    {
+        return $this->db = null;
+    }
+
+    /**
      * Run raw sql query
      *
      * @param string $sql sql query
