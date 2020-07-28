@@ -6,7 +6,10 @@ use Merus\WAB\Http\Router;
 if(!function_exists('array_find')) {
     /**
      * Find an array element using the given callback
-     * 
+     *
+     * @param array $array
+     * @param callable $callback
+     *
      * @return mixed|null
      */
     function array_find(array $array, callable $callback) {
@@ -23,7 +26,8 @@ if(!function_exists('array_find')) {
 if(!function_exists('route')) {
     /**
      * Helper method for defining routes
-     * 
+     *
+     *
      * @return object
      */
     function route() {
@@ -41,7 +45,5 @@ if(!function_exists('config')) {
         $config = require_once __DIR__ . '/config.php';
 
         if(!$key) return $config;
-
-
     }
 }
