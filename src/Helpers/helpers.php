@@ -2,6 +2,7 @@
 
 use Merus\WAB\Http\Router;
 
+
 if(!function_exists('array_find')) {
     /**
      * Find an array element using the given callback
