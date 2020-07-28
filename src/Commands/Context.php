@@ -6,8 +6,9 @@ namespace Merus\WAB\Commands;
 
 use Merus\WAB\Database\DB;
 use Merus\WAB\ExecutionResult;
+use Merus\WAB\Commands\Interfaces\CommandContextInterface;
 
-class Context implements Interfaces\CommandContextInterface
+class Context implements CommandContextInterface
 {
     /**
      * Database connection
@@ -23,6 +24,12 @@ class Context implements Interfaces\CommandContextInterface
      */
     private ExecutionResult $result;
 
+    /**
+     * Context constructor.
+     *
+     * @param DB $db Database connection
+     * @param ExecutionResult $result Result of previous execution
+     */
     public function __construct(DB $db, ExecutionResult $result)
     {
         $this->db = $db;
