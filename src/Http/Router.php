@@ -11,7 +11,9 @@ class Router
      */
     protected static array $routes = [];
 
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * Define a route
@@ -21,7 +23,7 @@ class Router
      *
      * @param $action callable Action to execute when
      */
-    public static function define( string $method, string $path, callable $action) : void
+    public static function define(string $method, string $path, callable $action): void
     {
         if (!$method || !$path || $action) throw new InvalidArgumentException($method, $path, $action);
 
@@ -39,20 +41,47 @@ class Router
     /**
      * Find an action for the given method and path
      *
-     * @param string $method The HTTP method of this route
-     * @param string $path The path of the route
-     *
      * @return array|null An array with the route information if found, null otherwise
      */
-    public static function match(string $method, string $path) : array
+    public static function match(): array
     {
-        return array_find(self::$routes, function($route) use ($method, $path) {
-            if($route['path'] === $path && $route['method'] === strtoupper($method)) {
+        $path = self::resolvePath();
+        $method = strtoupper($_SERVER['REQUEST_METHOD']);
+
+        return array_find(self::$routes, function ($route) use ($method, $path) {
+            if ($route['path'] === $path && $route['method'] === strtoupper($method)) {
                 return true;
             }
 
             return false;
         });
+    }
+
+    /**
+     * Resolve the path of the request
+     *
+     * @return string
+     */
+    protected static function resolvePath(): string
+    {
+        $requestUri = $_SERVER['REQUEST_URI'];
+        $scriptName = $_SERVER['SCRIPT_NAME'];
+
+        $pathName = dirname($scriptName);
+
+        if (strpos($requestUri, $scriptName) === 0) {
+            $requestUri = substr($requestUri, strlen($scriptName));
+        } else if (strpos($requestUri, $pathName) === 0) {
+            $requestUri = substr($requestUri, strlen($pathName));
+        }
+
+        if (($requestUri == '/') || empty($requestUri)) {
+            return '/';
+        }
+
+        $uri = parse_url($requestUri, PHP_URL_PATH);
+
+        return "/" . str_replace(array('//', '../'), '/', ltrim($uri, '/'));
     }
 
     /**
@@ -63,9 +92,15 @@ class Router
      *
      * @return bool
      */
-    private static function exists(string $method, string $path) : bool
+    private static function exists(string $method, string $path): bool
     {
-        return !!self::match($method, $path);
+        return !!array_find(self::$routes, function ($route) use ($method, $path) {
+            if ($route['path'] === $path && $route['method'] === strtoupper($method)) {
+                return true;
+            }
+
+            return false;
+        });
     }
 
     /**
@@ -75,7 +110,7 @@ class Router
      *
      * @return bool
      */
-    private static function validateMethod($method) : bool
+    private static function validateMethod($method): bool
     {
         // We're only supporting get and post requests in our little router
         return in_array(strtoupper($method), [
