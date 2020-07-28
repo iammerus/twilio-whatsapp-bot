@@ -11,6 +11,13 @@ use Merus\WAB\Commands\Interfaces\CommandContextInterface;
 class Context implements CommandContextInterface
 {
     /**
+     * User's input text
+     *
+     * @var string
+     */
+    protected string $input;
+
+    /**
      * Database connection
      *
      * @var DB
@@ -27,11 +34,13 @@ class Context implements CommandContextInterface
     /**
      * Context constructor.
      *
+     * @param string $input User's input text
      * @param DB $db Database connection
      * @param ExecutionResult $result Result of previous execution
      */
-    public function __construct(DB $db, ExecutionResult $result)
+    public function __construct(string $input, DB $db, ExecutionResult $result)
     {
+        $this->input = $input;
         $this->db = $db;
         $this->result = $result;
     }
@@ -54,5 +63,15 @@ class Context implements CommandContextInterface
     public function getExecutionResult(): ExecutionResult
     {
         return $this->result;
+    }
+
+    /**
+     * Get the user's input text
+     *
+     * @return string
+     */
+    public function getUserInput(): string
+    {
+        return $this->input;
     }
 }
