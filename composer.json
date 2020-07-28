@@ -1,7 +1,7 @@
 {
   "autoload": {
     "files": [
-      "src/helpers.php"
+      "src/Helpers/helpers.php"
     ],
     "psr-4": {
       "Merus\\WAB\\": "./src/"
