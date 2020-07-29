@@ -1,7 +1,5 @@
 <?php
 
-file_put_contents(__DIR__ . '/output.json', json_encode($_POST));
-
 use Merus\WAB\Bot;
 
 // Define path constants
@@ -16,8 +14,16 @@ require_once ROOT_PATH . '/vendor/autoload.php';
 // Load configuration file
 $config = require_once APP_ROOT . '/Helpers/config.php';
 
-// Instantiate the bot handler app
-$bot = new Bot($config);
+try {
+    // Instantiate the bot handler app
+    $bot = new Bot($config);
 
-// Handle the incoming request
-$bot->handle();
+    // Handle the incoming request
+    $bot->handle();
+} catch (\Exception $e) {
+    send_message("Yikes! Something wen't wrong in the application. This error has been logged and the developers notified");
+
+    $log = new \Merus\WAB\Helpers\Log();
+
+    $log->logWrite($e->getMessage());
+}
