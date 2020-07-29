@@ -1,5 +1,7 @@
 <?php
 
+file_put_contents(__DIR__ . '/output.json', json_encode($_POST));
+
 use Merus\WAB\Bot;
 
 // Define path constants
