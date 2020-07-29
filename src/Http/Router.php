@@ -21,18 +21,18 @@ class Router
      * @param string $method The HTTP method of this route
      * @param string $path The path of the route
      *
-     * @param $action callable Action to execute when
+     * @param $action mixed Action to execute when
      */
-    public static function define(string $method, string $path, callable $action): void
+    public static function define(string $method, string $path, $action): void
     {
-        if (!$method || !$path || $action) throw new InvalidArgumentException($method, $path, $action);
+        if (!$method || !$path || !$action) throw new InvalidArgumentException();
 
-        if (!self::validateMethod($method)) throw new InvalidArgumentException($method);
+        if (!self::validateMethod($method)) throw new InvalidArgumentException();
 
-        if (!self::exists($path, $method)) throw new InvalidArgumentException("An action for this route has already been defined");
+        if (self::exists($path, $method)) throw new InvalidArgumentException("An action for this route has already been defined");
 
         self::$routes[] = [
-            'method' => $method,
+            'method' => strtoupper($method),
             'path' => $path,
             'action' => $action
         ];
@@ -43,7 +43,7 @@ class Router
      *
      * @return array|null An array with the route information if found, null otherwise
      */
-    public static function match(): array
+    public static function match(): ?array
     {
         $path = self::resolvePath();
         $method = strtoupper($_SERVER['REQUEST_METHOD']);
