@@ -1,6 +1,7 @@
 <?php
 
 use Merus\WAB\Bot;
+use Merus\WAB\Helpers\Log;
 
 // Define path constants
 define('ROOT_PATH', dirname(__DIR__));
@@ -23,7 +24,7 @@ try {
 } catch (\Exception $e) {
     send_message("Yikes! Something wen't wrong in the application. This error has been logged and the developers notified");
 
-    $log = new \Merus\WAB\Helpers\Log();
+    $log = Log::get();
 
     $log->logWrite($e->getMessage());
 }
