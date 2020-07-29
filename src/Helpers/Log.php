@@ -9,7 +9,23 @@ class Log {
     private $handle = null;
 
 
-    public function __construct() {
+    protected static ?Log $instance = null;
+
+
+    /**
+     * Get an instance of the logger
+     * @return Log
+     */
+    public static function get()
+    {
+        if(!self::$instance) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+    private function __construct() {
         $this->logOpen();
     }
 
