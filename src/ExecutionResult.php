@@ -20,9 +20,22 @@ class ExecutionResult
     protected string $table = 'execution_results';
 
 
-    public function create($command)
+    /**
+     * Insert an execution record
+     *
+     * @param string $command
+     * @param array $information
+     * @param User $user
+     *
+     * @return string
+     */
+    public function create(string $command, array $information, User $user): string
     {
+        $information['command'] = $command;
+        $information['uid'] = $user->getNumber();
+        $information['meta'] = json_encode($information['meta']);
 
+        return $this->db->insert($this->table, $information);
     }
 
     /**
