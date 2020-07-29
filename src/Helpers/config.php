@@ -3,14 +3,14 @@
 return [
     'database' => [
         //required
-        'username' => '',
-        'database' => '',
+        'username' => 'root',
+        'database' => 'wa_bot',
         //optional
         'password' => '',
         'type' => 'mysql',
         'charset' => 'utf8',
-        'host' => 'localhost',
-        'port' => '3309'
+        'host' => '127.0.0.1',
+        'port' => '3306'
     ],
     'app' => [
         'name' => 'Twilio Whatsapp Bot'
