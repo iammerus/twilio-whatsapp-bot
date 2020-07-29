@@ -85,6 +85,17 @@ class Registrar
     {
         $this->define(FallbackCommand::meta(), FallbackCommand::class, true);
         $this->define(SessionExpiryCommand::meta(), SessionExpiryCommand::class, false);
+
+        // Load external commands
+        $externals = require_once ROOT_PATH . '/commands.php';
+
+        foreach ($externals as $external) {
+            $meta = $external::meta();
+
+            $this->define($meta, $external, $meta['fallback'] ?? false);
+        }
+
+
     }
 
     /**
