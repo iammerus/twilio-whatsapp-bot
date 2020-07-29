@@ -15,52 +15,6 @@ $sender = "whatsapp:ACCOUNT_NUMBER";
 
 
 /**
- * Send a WhatsApp message to the specified number
- *
- * @param string $body The body of the message
- *
- * @return void
- */
-function send_message($body)
-{
-    $response = new MessagingResponse();
-
-    // Print out the TwiML for the response
-    $message = $response->message('');
-
-    // Set the body to the
-    $message->body($body);
-
-    echo $response;
-}
-
-/**
- * Send a media WhatsApp message to the specified number
- *
- * @param string|array $mediaUrl The URL for the media object to be sent
- * @param string $body The body of the message
- *
- * @return void
- */
-function send_media_message($mediaUrl, $body = "")
-{
-    $response = new MessagingResponse();
-
-    // Print out the TwiML for the response
-    $message = $response->message('');
-
-    if (!is_array($mediaUrl)) {
-        $message->media($mediaUrl);
-    } else {
-        foreach ($mediaUrl as $item) {
-            $message->media($item->media);
-        }
-    }
-
-    echo $response;
-}
-
-/**
  * Fetches an article matching the query from Wikipedia
  *
  * @param string $query The query to search for
