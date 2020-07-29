@@ -4,6 +4,9 @@
 namespace Merus\WAB\Commands;
 
 
+use InvalidArgumentException;
+use Merus\WAB\Database\DB;
+
 class User
 {
     protected ?string $name;
@@ -45,5 +48,24 @@ class User
     public function setName(?string $name): void
     {
         $this->name = $name;
+    }
+
+    /**
+     * Updates the user's information
+     *
+     * @param DB $db
+     * @return mixed
+     */
+    public function update(DB $db)
+    {
+        if(!$this->getNumber()) {
+            throw new InvalidArgumentException("User's UID is not defined");
+        }
+
+        return $db->update('users', [
+            'name' => $this->getName()
+        ], [
+            'uid' => $this->getNumber()
+        ]);
     }
 }
