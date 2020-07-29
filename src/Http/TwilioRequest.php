@@ -66,4 +66,36 @@ class TwilioRequest
         $this->to = $to;
         $this->body = $body;
     }
+
+    /**
+     * @return string
+     */
+    public function getMessageSid(): string
+    {
+        return $this->messageSid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFrom(): string
+    {
+        return $this->from;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTo(): string
+    {
+        return $this->to;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBody(): string
+    {
+        return $this->body;
+    }
 }
