@@ -32,17 +32,26 @@ class Context implements CommandContextInterface
     private ExecutionResult $result;
 
     /**
+     * The user of the current request
+     *
+     * @var User
+     */
+    private User $user;
+
+    /**
      * Context constructor.
      *
+     * @param User $user
      * @param string $input User's input text
      * @param DB $db Database connection
      * @param ExecutionResult $result Result of previous execution
      */
-    public function __construct(string $input, DB $db, ExecutionResult $result)
+    public function __construct( User $user, string $input, DB $db, ExecutionResult $result)
     {
         $this->input = $input;
         $this->db = $db;
         $this->result = $result;
+        $this->user = $user;
     }
 
     /**
@@ -73,5 +82,13 @@ class Context implements CommandContextInterface
     public function getUserInput(): string
     {
         return $this->input;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getUser(): User
+    {
+        return $this->user;
     }
 }
