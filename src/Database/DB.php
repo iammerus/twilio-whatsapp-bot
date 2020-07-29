@@ -15,7 +15,7 @@ class DB
     /**
      * hold database connection
      */
-    protected $db;
+    protected ?PDO $db;
 
     /**
      * Array of connection arguments
@@ -25,9 +25,9 @@ class DB
      */
     public function __construct($args)
     {
-        if (!isset($args['database'])) throw new InvalidArgumentException('&args[\'database\'] is required');
+        if (!isset($args['database']) || strlen($args['username']) === 0) throw new InvalidArgumentException('&args[\'database\'] is required');
 
-        if (!isset($args['username'])) throw new InvalidArgumentException('&args[\'username\']  is required');
+        if (!isset($args['username']) || strlen($args['username']) === 0) throw new InvalidArgumentException('&args[\'username\']  is required');
 
 
         $type = isset($args['type']) ? $args['type'] : 'mysql';
