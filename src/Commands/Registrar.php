@@ -11,6 +11,7 @@ use Merus\WAB\Commands\Defaults\UserInformationCommand;
 use Merus\WAB\Commands\Interfaces\CommandInterface;
 use Merus\WAB\Database\DB;
 use Merus\WAB\ExecutionResult;
+use Merus\WAB\Helpers\Log;
 use Merus\WAB\Http\TwilioRequest;
 
 class Registrar
@@ -91,11 +92,18 @@ class Registrar
 
         foreach ($externals as $external) {
             $meta = $external::meta();
+            $metaText = json_encode($meta);
+
+            Log::get()->logWrite("Registering external command: {$metaText}");
 
             $this->define($meta, $external, $meta['fallback'] ?? false);
         }
 
+        // Get the total number of registered commands
+        $total = count($this->registered);
 
+        // Log out entry
+        Log::get()->logWrite("Finished registering commands. Total commands in registry: {$total}. ");
     }
 
     /**
