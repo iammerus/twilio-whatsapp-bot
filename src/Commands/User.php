@@ -58,7 +58,7 @@ class User
      */
     public function update(DB $db)
     {
-        if(!$this->getNumber()) {
+        if (!$this->getNumber()) {
             throw new InvalidArgumentException("User's UID is not defined");
         }
 
@@ -67,5 +67,10 @@ class User
         ], [
             'uid' => $this->getNumber()
         ]);
+    }
+
+    public static function fromObject(object $user)
+    {
+        return new User($user->uid, $user->name);
     }
 }
