@@ -4,25 +4,23 @@
 namespace Merus\WAB\Commands\Defaults;
 
 
+use Merus\WAB\Commands\CanSendMessages;
 use Merus\WAB\Commands\CommandOutput;
 use Merus\WAB\Commands\Interfaces\CommandInterface;
 use Merus\WAB\Commands\Interfaces\CommandContextInterface;
 
 class FallbackCommand implements CommandInterface
 {
-
     /**
      * @param CommandContextInterface $context
-     * @return mixed|string
+     * @return array
      */
-    public function execute(CommandContextInterface $context)
+    public function execute(CommandContextInterface $context): array
     {
         return CommandOutput::create(
-            'default.fallback',
             $this->getRandomFallbackResponse(),
             COMMAND_EXECUTION_COMPLETE,
-            '{}',
-            $context
+            [],
         );
     }
 
@@ -64,7 +62,7 @@ class FallbackCommand implements CommandInterface
             'description' => 'A default fallback for when we fail to match any commands',
 
             // Pattern to match or array of patterns to match
-            'match' => '*'
+            'match' => null
         ];
     }
 }
