@@ -11,14 +11,14 @@ interface CommandInterface
      *
      * @param CommandContextInterface $context The context of the execution
      *
-     * @return mixed
+     * @return array
      */
-    public function execute(CommandContextInterface $context);
+    public function execute(CommandContextInterface $context): array;
 
     /**
      * Get meta information about the command
      *
      * @return array
      */
-    public static function meta() : array;
+    public static function meta(): array;
 }
