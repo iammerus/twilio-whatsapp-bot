@@ -5,7 +5,7 @@ namespace Merus\WAB\Helpers;
 
 
 class Log {
-    private string $filename = APP_ROOT . '/error.log';
+    private string $filename = ROOT_PATH . '/error.log';
     private $handle = null;
 
 
