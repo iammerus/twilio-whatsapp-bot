@@ -9,21 +9,21 @@ class TwilioRequest
      *
      * @var string
      */
-    private string $messageSid;
+    private ?string $messageSid;
 
     /**
      * The 34 character id of the Account this message is associated with.
      *
      * @var string
      */
-    private string $accountSid;
+    private ?string $accountSid;
 
     /**
      * The 34 character id of the Messaging Service associated with the message.
      *
      * @var string
      */
-    private string $messagingServiceSid;
+    private ?string $messagingServiceSid;
 
     /**
      * The phone number or Channel address that sent this message.
@@ -57,7 +57,7 @@ class TwilioRequest
      * @param string $body The text body of the message. Up to 1600 characters long.
      */
     public function __construct(
-        string $messageSid, string $accountSid, string $messagingServiceSid, string $from, string $to, string $body)
+        ?string $messageSid, ?string $accountSid, ?string $messagingServiceSid, string $from, string $to, string $body)
     {
         $this->messageSid = $messageSid;
         $this->accountSid = $accountSid;
