@@ -1,6 +1,7 @@
 <?php
 
 use Merus\WAB\Http\Router;
+use Twilio\TwiML\MessagingResponse;
 
 
 if(!function_exists('array_find')) {
@@ -45,5 +46,25 @@ if(!function_exists('config')) {
         $config = require_once __DIR__ . '/config.php';
 
         if(!$key) return $config;
+    }
+}
+
+
+if(!function_exists('send_message')) {
+    /**
+     * Send a WhatsApp message to the specified number
+     *
+     * @param string $body The body of the message
+     *
+     * @return void
+     */
+    function send_message($body)
+    {
+        $response = new MessagingResponse();
+
+        // Print out the TwiML for the response
+        $response->message($body);
+
+        echo $response;
     }
 }
