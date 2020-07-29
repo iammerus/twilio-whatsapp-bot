@@ -4,7 +4,8 @@
       "src/Helpers/helpers.php"
     ],
     "psr-4": {
-      "Merus\\WAB\\": "./src/"
+      "Merus\\WAB\\": "./src/",
+      "App\\": "./app/"
     }
   },
   "require": {
