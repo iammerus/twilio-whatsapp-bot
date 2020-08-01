@@ -31,11 +31,22 @@ class ExecutionResult
      */
     public function create(string $command, array $information, User $user): string
     {
+        $id = -1;
+
+        if (array_key_exists('last_id', $information)) {
+            $id = intval($information['last_id']);
+            unset($information['last_id']);
+        }
+
         $information['command'] = $command;
         $information['uid'] = $user->getNumber();
         $information['meta'] = json_encode($information['meta']);
 
-        return $this->db->insert($this->table, $information);
+        if ($id === -1) return $this->db->insert($this->table, $information);
+
+        return $this->db->update($this->table, $information, [
+            'id' => $id
+        ]);
     }
 
     /**
