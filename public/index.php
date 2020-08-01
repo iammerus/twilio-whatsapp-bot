@@ -13,7 +13,7 @@ require_once APP_ROOT . '/Helpers/constants.php';
 require_once ROOT_PATH . '/vendor/autoload.php';
 
 // Load configuration file
-$config = require_once APP_ROOT . '/Helpers/config.php';
+$config = require_once ROOT_PATH . '/config.php';
 
 try {
     // Instantiate the bot handler app
