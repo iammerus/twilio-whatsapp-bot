@@ -92,9 +92,6 @@ class Registrar
 
         foreach ($externals as $external) {
             $meta = $external::meta();
-            $metaText = json_encode($meta);
-
-            Log::get()->logWrite("Registering external command: {$metaText}");
 
             $this->define($meta, $external, $meta['fallback'] ?? false);
         }
@@ -116,7 +113,6 @@ class Registrar
     {
         $user = $this->fetchUser($request->getFrom());
         $result = null;
-
 
         if (!is_string($user->getName()) || strlen($user->getName()) === 0) {
             $this->current = new UserInformationCommand();
@@ -162,7 +158,7 @@ class Registrar
         // request to that command
         $last = $this->exec->last($user);
 
-        if ($last->result !== COMMAND_EXECUTION_COMPLETE) {
+        if ($last && $last->result !== COMMAND_EXECUTION_COMPLETE) {
             $minutes = $this->elapsed($last->last_updated);
 
             if ($minutes > $this->expiry) {
@@ -174,6 +170,31 @@ class Registrar
                 return [
                     'command' => $this->registered[$last->command],
                     'last' => $last
+                ];
+            }
+        }
+
+        // So, it was neither an expired session nor an incomplete command.
+        foreach ($this->registered as $command) {
+            // Check if we're not on a fallback command
+            if (array_key_exists('fallback', $command) && $command['fallback']) continue;
+
+            // Check if we don't have a match pattern for the current command
+            if (!array_key_exists('match', $command['meta'])) continue;
+
+            // Check if this is a programmatically invoked command (match is null)
+            if ($command['meta']['match'] === null) continue;
+
+            $pattern = $command['meta']['match'];
+
+            // TODO: Implement support for array of patterns to be passed in as a parameter
+            // We currently don't support multiple patterns per command
+            if (is_array($pattern)) break;
+
+            if (preg_match("#{$pattern}#i", $input)) {
+                return [
+                    'command' => $command,
+                    'last' => null
                 ];
             }
         }
