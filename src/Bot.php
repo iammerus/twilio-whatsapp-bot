@@ -5,6 +5,7 @@ namespace Merus\WAB;
 use Exception;
 use Merus\WAB\Commands\Registrar;
 use Merus\WAB\Database\DB;
+use Merus\WAB\Helpers\Log;
 use Merus\WAB\Http\Router;
 use Merus\WAB\Http\TwilioRequest;
 
@@ -129,13 +130,14 @@ class Bot
 
     public function updates()
     {
-
+        Log::get()->logWrite(json_encode($$_POST), false);
     }
 
     /**
      * Handles incoming messages
      *
      * @return void
+     * @throws Exception
      */
     public function incoming()
     {
