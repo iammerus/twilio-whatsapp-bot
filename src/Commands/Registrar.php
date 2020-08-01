@@ -100,7 +100,7 @@ class Registrar
         $total = count($this->registered);
 
         // Log out entry
-        Log::get()->logWrite("Finished registering commands. Total commands in registry: {$total}. ");
+        Log::get()->logWrite("Finished registering commands. Total commands in registry: {$total}. ", false);
     }
 
     /**
