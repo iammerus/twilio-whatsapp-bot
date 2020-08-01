@@ -25,14 +25,16 @@ trait CanSendMessages
      *
      * @param string $status The status of execution
      * @param array $meta The meta information about the execution
+     * @param int $lastId The ID for the previous execution result
      *
      * @return array
      */
-    public function status(string $status, array $meta)
+    public function status(string $status, array $meta, int $lastId = -1)
     {
         return [
             'result' => $status,
-            'meta' => $meta
+            'meta' => $meta,
+            'last_id' => $lastId
         ];
     }
 }
